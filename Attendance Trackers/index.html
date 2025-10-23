@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1><i class="fas fa-clipboard-check"></i> <span data-i18n="appTitle">Attendance Tracker</span></h1>
+                <div class="header-controls">
+                    <!-- Language Switcher -->
+                    <select id="languageSelect" class="select-control">
+                        <option value="en">English</option>
+                        <option value="pt">Português</option>
+                        <option value="tr">Türkçe</option>
+                    </select>
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="btn-icon" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="attendance" data-i18n="tabAttendance">Attendance</button>
+            <button class="tab-btn" data-tab="students" data-i18n="tabStudents">Students</button>
+            <button class="tab-btn" data-tab="sections" data-i18n="tabSections">Sections</button>
+            <button class="tab-btn" data-tab="reports" data-i18n="tabReports">Reports</button>
+        </nav>
+
+        <!-- Attendance Tab -->
+        <div id="attendance" class="tab-content active">
+            <div class="card">
+                <h2 data-i18n="markAttendance">Mark Attendance</h2>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <label data-i18n="selectDate">Select Date:</label>
+                        <input type="date" id="attendanceDate" class="input-control">
+                    </div>
+                    <div class="filter-group">
+                        <label data-i18n="filterSection">Filter by Section:</label>
+                        <select id="sectionFilter" class="select-control">
+                            <option value="all" data-i18n="allSections">All Sections</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label data-i18n="searchStudent">Search Student:</label>
+                        <input type="text" id="searchStudent" class="input-control" placeholder="Search...">
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="student">Student</th>
+                                <th data-i18n="section">Section</th>
+                                <th data-i18n="status">Status</th>
+                                <th data-i18n="action">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Students Tab -->
+        <div id="students" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 data-i18n="manageStudents">Manage Students</h2>
+                    <button class="btn btn-primary" id="addStudentBtn">
+                        <i class="fas fa-plus"></i> <span data-i18n="addStudent">Add Student</span>
+                    </button>
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="searchStudentList" class="input-control" placeholder="Search students..." data-i18n-placeholder="searchStudents">
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="name">Name</th>
+                                <th data-i18n="sections">Sections</th>
+                                <th data-i18n="actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sections Tab -->
+        <div id="sections" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 data-i18n="manageSections">Manage Sections</h2>
+                    <button class="btn btn-primary" id="addSectionBtn">
+                        <i class="fas fa-plus"></i> <span data-i18n="addSection">Add Section</span>
+                    </button>
+                </div>
+
+                <div class="sections-grid" id="sectionsGrid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <div class="card">
+                <h2 data-i18n="exportReports">Export Reports</h2>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <label data-i18n="fromDate">From Date:</label>
+                        <input type="date" id="reportFromDate" class="input-control">
+                    </div>
+                    <div class="filter-group">
+                        <label data-i18n="toDate">To Date:</label>
+                        <input type="date" id="reportToDate" class="input-control">
+                    </div>
+                    <div class="filter-group">
+                        <label data-i18n="reportSection">Section:</label>
+                        <select id="reportSectionFilter" class="select-control">
+                            <option value="all" data-i18n="allSections">All Sections</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="report-actions">
+                    <button class="btn btn-success" id="exportCSVBtn">
+                        <i class="fas fa-file-csv"></i> <span data-i18n="exportCSV">Export CSV</span>
+                    </button>
+                    <button class="btn btn-danger" id="exportPDFBtn">
+                        <i class="fas fa-file-pdf"></i> <span data-i18n="exportPDF">Export PDF</span>
+                    </button>
+                </div>
+
+                <div class="report-preview">
+                    <h3 data-i18n="reportPreview">Report Preview</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalStudents">0</div>
+                            <div class="stat-label" data-i18n="totalStudents">Total Students</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalPresent">0</div>
+                            <div class="stat-label" data-i18n="totalPresent">Total Present</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalAbsent">0</div>
+                            <div class="stat-label" data-i18n="totalAbsent">Total Absent</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="attendanceRate">0%</div>
+                            <div class="stat-label" data-i18n="attendanceRate">Attendance Rate</div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="date">Date</th>
+                                    <th data-i18n="student">Student</th>
+                                    <th data-i18n="section">Section</th>
+                                    <th data-i18n="status">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportTableBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for Add/Edit Student -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="studentModalTitle" data-i18n="addStudent">Add Student</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="studentForm">
+                <div class="form-group">
+                    <label data-i18n="studentName">Student Name:</label>
+                    <input type="text" id="studentName" class="input-control" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="selectSections">Select Sections:</label>
+                    <div id="studentSectionsCheckbox" class="checkbox-group">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary" data-i18n="save">Save</button>
+                    <button type="button" class="btn btn-secondary modal-close" data-i18n="cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Section -->
+    <div id="sectionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="sectionModalTitle" data-i18n="addSection">Add Section</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="sectionForm">
+                <div class="form-group">
+                    <label data-i18n="sectionName">Section Name:</label>
+                    <input type="text" id="sectionName" class="input-control" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="sectionColor">Color:</label>
+                    <input type="color" id="sectionColor" class="color-control" value="#3b82f6">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary" data-i18n="save">Save</button>
+                    <button type="button" class="btn btn-secondary modal-close" data-i18n="cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="translations.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
